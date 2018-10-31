@@ -1,0 +1,83 @@
+{
+  "_args": [
+    [
+      "expect-jsx@2.6.0",
+      "/home/tradeitforweed_club/frontend-final"
+    ]
+  ],
+  "_from": "expect-jsx@2.6.0",
+  "_id": "expect-jsx@2.6.0",
+  "_inBundle": false,
+  "_integrity": "sha1-Q/SEgoB305QkZEISBbeMdbl5Hms=",
+  "_location": "/expect-jsx",
+  "_phantomChildren": {
+    "create-react-class": "15.6.2",
+    "fbjs": "0.8.16",
+    "prop-types": "15.6.0"
+  },
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "expect-jsx@2.6.0",
+    "name": "expect-jsx",
+    "escapedName": "expect-jsx",
+    "rawSpec": "2.6.0",
+    "saveSpec": null,
+    "fetchSpec": "2.6.0"
+  },
+  "_requiredBy": [
+    "/react-pretty-numbers"
+  ],
+  "_resolved": "https://registry.npmjs.org/expect-jsx/-/expect-jsx-2.6.0.tgz",
+  "_spec": "2.6.0",
+  "_where": "/home/tradeitforweed_club/frontend-final",
+  "author": {
+    "name": "Algolia",
+    "email": "support@algolia.com",
+    "url": "https://github.com/algolia/"
+  },
+  "bugs": {
+    "url": "https://github.com/algolia/expect-jsx/issues"
+  },
+  "dependencies": {
+    "collapse-white-space": "^1.0.0",
+    "react": "^0.14.8 || ^15.0.1",
+    "react-element-to-jsx-string": "^3.0.0"
+  },
+  "description": "toEqualJSX for mjackson/expect",
+  "devDependencies": {
+    "babel": "^5.8.29",
+    "babel-eslint": "^4.1.8",
+    "eslint": "^1.10.3",
+    "eslint-config-airbnb": "^1.0.0",
+    "eslint-config-algolia": "^4.6.0",
+    "eslint-plugin-algolia": "^1.5.0",
+    "eslint-plugin-react": "^4.2.3",
+    "expect": "^1.14.0",
+    "mocha": "^2.4.5",
+    "react": "^15.0.1"
+  },
+  "homepage": "https://github.com/algolia/expect-jsx#readme",
+  "keywords": [
+    "expect",
+    "expect-extension"
+  ],
+  "license": "MIT",
+  "main": "index-dist.js",
+  "name": "expect-jsx",
+  "peerDependencies": {
+    "expect": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/algolia/expect-jsx.git"
+  },
+  "scripts": {
+    "build": "babel index.js -o index-dist.js",
+    "build:watch": "babel index.js -o index-dist.js -w",
+    "prepublish": "npm run build",
+    "test": "mocha --opts mocha.opts && eslint .",
+    "test:watch": "mocha --opts mocha.opts --watch --reporter min"
+  },
+  "version": "2.6.0"
+}

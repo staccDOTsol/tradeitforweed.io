@@ -1,0 +1,26 @@
+.aws
+.boto
+
+snapshot
+
+services/avatars/steem
+services/frontend/build
+services/frontend/scripts
+services/frontend/node_modules
+services/rest/__pycache__
+services/test
+
+.idea
+out
+
+data
+
+# Ignore Mac DS_Store files
+.DS_Store
+**/.DS_Store
+frontend/node_modules
+frontend/nohup.out
+backend/rest/nohup.out
+backend/indexer/nohup.out
+backend/statistics/nohup.out
+caddy/nohup.out

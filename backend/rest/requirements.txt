@@ -1,0 +1,6 @@
+flask
+flask-cors
+pymongo
+git+git://github.com/DunnCreativeSS/smoke-python@master#egg=smoke
+uwsgi
+funcy==1.8

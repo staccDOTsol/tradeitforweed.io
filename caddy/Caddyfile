@@ -1,0 +1,18 @@
+tradeitforweed.io {
+    cors
+
+    # client
+    proxy / localhost:3000 {
+		websocket
+    }
+
+    # rest
+    proxy /rest 0.0.0.0:5000 {
+        without /rest
+    }
+
+    proxy /wss 0.0.0.0:8090 {
+	websocket
+        without /wss
+    }
+}

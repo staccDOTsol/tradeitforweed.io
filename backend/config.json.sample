@@ -1,0 +1,6 @@
+{
+  "mongo_url":"mongodb://mongo",
+  "steemd_nodes": [
+    "https://steem.io/ws"
+  ]
+}

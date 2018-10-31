@@ -1,0 +1,72 @@
+{
+  "_args": [
+    [
+      "@steem/crypto-session@git+https://github.com/steemit/crypto-session.git#83a90b319ce5bc6a70362d52a15a815de7e729bb",
+      "/home/tradeitforweed_club/frontend-final"
+    ]
+  ],
+  "_from": "@steem/crypto-session@git+https://github.com/steemit/crypto-session.git#83a90b319ce5bc6a70362d52a15a815de7e729bb",
+  "_id": "@steem/crypto-session@git+https://github.com/steemit/crypto-session.git#83a90b319ce5bc6a70362d52a15a815de7e729bb",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/@steem/crypto-session",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "@steem/crypto-session@git+https://github.com/steemit/crypto-session.git#83a90b319ce5bc6a70362d52a15a815de7e729bb",
+    "name": "@steem/crypto-session",
+    "escapedName": "@steem%2fcrypto-session",
+    "scope": "@steem",
+    "rawSpec": "git+https://github.com/steemit/crypto-session.git#83a90b319ce5bc6a70362d52a15a815de7e729bb",
+    "saveSpec": "git+https://github.com/steemit/crypto-session.git#83a90b319ce5bc6a70362d52a15a815de7e729bb",
+    "fetchSpec": "https://github.com/steemit/crypto-session.git",
+    "gitCommittish": "83a90b319ce5bc6a70362d52a15a815de7e729bb"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "git+https://github.com/steemit/crypto-session.git#83a90b319ce5bc6a70362d52a15a815de7e729bb",
+  "_spec": "git+https://github.com/steemit/crypto-session.git#83a90b319ce5bc6a70362d52a15a815de7e729bb",
+  "_where": "/home/tradeitforweed_club/frontend-final",
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/steemit/crypto-session/issues"
+  },
+  "dependencies": {
+    "koa-session": "3",
+    "libsodium": "^0.4.8",
+    "libsodium-wrappers": "^0.4.8"
+  },
+  "description": "use koa-session, but encrypted",
+  "devDependencies": {
+    "istanbul-harmony": "0",
+    "koa": "0",
+    "mocha": "2",
+    "should": "7",
+    "supertest": "1"
+  },
+  "files": [
+    "index.js"
+  ],
+  "homepage": "https://github.com/steemit/crypto-session#readme",
+  "keywords": [
+    "encrypted",
+    "session",
+    "crypto",
+    "koa",
+    "aes"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "@steem/crypto-session",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/steemit/crypto-session.git"
+  },
+  "scripts": {
+    "test": "mocha -R spec -t 5000 test/*.js",
+    "test-cov": "istanbul cover node_modules/.bin/_mocha -- -R dot -t 5000 test/*.js",
+    "test-travis": "istanbul cover node_modules/.bin/_mocha --report lcovonly -- -R dot -t 5000 test/*.js"
+  },
+  "version": "1.0.3"
+}

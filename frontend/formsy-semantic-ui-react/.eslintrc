@@ -1,0 +1,10 @@
+{
+  "plugins": ["mocha"],
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "rules": {
+    "react/no-did-mount-set-state" : 0,
+    "object-shorthand": 0,
+    "no-undef": 0,
+  }
+}
