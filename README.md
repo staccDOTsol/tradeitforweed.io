@@ -7,28 +7,51 @@ python3, python3-pip, npm, node, ubuntu, docker, docker-compose, smoked on 8090
 ## Installation
 
 run smoked on 8090
+
 git clone repo
+
 cd into repo
+
 sudo nohup docker-compose up &
+
 cd backend
+
 sudo find ./ -type f -exec sed -i -e "s/btstalk/(name of your db on mongo)/g" {} \;
+
 cd rest
+
 sudo nohup python3 main.py &
+
 cd ../indexer
+
 sudo nano main.py
+
 change matched_tags to the tags of your forum
+
 sudo nohup python3 main.py &
+
 cd ../statistics
+
 sudo nohup python3 main.py &
+
 cd ../../frontend
+
 npm i -f
+
 git clone https://github.com/smokenetwork/smoke-js/
+
 cd smoke-js
+
 npm i -f
+
 cd ..
+
 sudo mv smoke-js node_modules/steem
+
 (you'll want to recursively change mentions of tradeitforweed.io and etc)
+
 (you'll want to edit urls in src/global.js and a few other places, look for instances of tradeitforweed.io)
+
 nohup npm start &
 
 sudo nano test.sh
