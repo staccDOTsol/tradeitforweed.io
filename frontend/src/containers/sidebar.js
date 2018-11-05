@@ -7,6 +7,23 @@ import { Link } from 'react-router-dom'
 import Iframe from 'react-iframe'
 
 class Sidebar extends React.Component {
+
+  evergreensubmit = (e) => {
+    const form = this.form.formsyForm
+    const model = form.getModel()
+    const _id = (this.props.forum) ? this.props.forum._id : false
+    const data = {
+        ...model,
+        ...this.state,
+        forum: this.props.forum,
+        namespace: _id,
+    }
+    const { action, account, parent } = this.props
+            let uri = GLOBAL.REST_API + '/evergreen?account=' + account;
+        const response = await fetch(uri);
+    return false
+  }
+
   render() {
     // const forums = this.props.forums;
     const { account, forum, section } = this.props
@@ -109,7 +126,13 @@ class Sidebar extends React.Component {
       userMenu = (
 	
         <Menu vertical fluid color='grey' size='small'>
-	
+<Button
+            ref={ref => this.formSubmit = ref}
+            primary
+            onClick={this.evergreensubmit}
+          >
+            Evergreen?
+          </Button>	
 	<Link className={`item`} to='/newspage'>
             
             News Page
