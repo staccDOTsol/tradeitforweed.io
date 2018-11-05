@@ -1,0 +1,21 @@
+g if "node" is running
+while :
+do
+    OUTPUT="$(ps -e -o state | grep -cE node)"
+
+if (( OUTPUT < 6 )); then
+    echo "node is running"
+	sleep 30s
+else
+    echo "node is not running"
+	cd indexer
+    sudo nohup node main.py
+	cd ../rest
+    sudo nohup node main.py
+	cd ../statistics
+    sudo nohup node main.py
+	cd ..
+fi
+
+
+done

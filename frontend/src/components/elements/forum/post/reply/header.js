@@ -41,8 +41,8 @@ export default class PostReplyHeader extends React.Component {
                     header='View this post on...'
                     content={(
                         <List>
-                            <List.Item as='a' href={`https://smoke.net/${reply.category}/@${reply.author}/${reply.permlink}`} target='_blank'>
-                                smoke.net
+                            <List.Item as='a' href={`https://smoke.io/${reply.category}/@${reply.author}/${reply.permlink}`} target='_blank'>
+                                smoke.io
                             </List.Item>
                         </List>
                     )}

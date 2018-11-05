@@ -7,7 +7,7 @@ import * as types from './actionTypes';
 import * as BreadcrumbActions from './breadcrumbActions';
 import * as ForumActions from './forumActions';
 import * as GLOBAL from '../global';
-
+//import {PostFormFieldTitle} from '../components/elements/post/form/field/title.js'
 export function setVoteProcessing(id) {
   return {
     type: types.POST_VOTE_PROCESSING,
@@ -334,6 +334,7 @@ export function submit(account, data, parent, action = 'post') {
     const ops = []
     // Set our post data
     const author = account.name
+    //const evergreen = PostFormFieldTitle.isChecked()
     const namespace = (data.existingPost) ? data.existingPost.namespace : data.namespace
     const title = (data.title) ? data.title : ''
     let body = data.body
@@ -342,6 +343,7 @@ export function submit(account, data, parent, action = 'post') {
     const parent_permlink = (data.existingPost) ? data.existingPost.parent_permlink : (parent) ? parent.permlink : data.category
     // JSON to append to the post
     const meta = {
+
       app: 'tradeitforweed/0.1',
       namespace: namespace,
       format: 'markdown+html',

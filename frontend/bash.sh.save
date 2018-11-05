@@ -1,0 +1,20 @@
+_isRunning() {
+    ps -o comm= -C "$1" 2>/dev/null | grep -x "$1" >/dev/null 2>&1
+}
+
+## example 1: checking if "gedit" is running
+
+if _isRunning node; then
+    echo "node is running"
+    sleep 30s
+else
+    echo "node is not running"
+fi
+
+## example 2: start lxpanel if it is not there
+
+if ! _isRunning node; then
+    nohup npm start  &
+fi
+
+

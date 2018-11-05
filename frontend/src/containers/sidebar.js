@@ -109,6 +109,7 @@ class Sidebar extends React.Component {
       userMenu = (
 	
         <Menu vertical fluid color='grey' size='small'>
+	
 	<Link className={`item`} to='/newspage'>
             
             News Page
@@ -141,7 +142,7 @@ class Sidebar extends React.Component {
         <Iframe url="/widget_price.html" position="relative" width="100%" height="220px" />
 
         <Iframe url="https://discordapp.com/widget?id=434637602902114304&theme=light" position="relative" width="100%" height="425px" />
-
+	
         {/*<h4>BtsTalk Meetup Resources</h4>*/}
         {/*<Iframe url="https://drive.google.com/embeddedfolderview?id=138Ewe6JQ1NAHhOiGGTFg5LPWkB9SU5h9#list" position="relative" width="100%" height="425px" />*/}
 

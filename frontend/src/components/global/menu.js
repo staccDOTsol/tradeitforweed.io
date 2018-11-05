@@ -166,20 +166,22 @@ class HeaderMenu extends Component {
           </Link>
           <Container className='item'>
             Don't miss our sister site at:  <strong><a href='https://tradeitforweed.club'>tradeitforweed.club</a></strong>
-          </Container>
-        
+          
+           , Need an account? Sign up on:  <strong><a href='https://smoke.io/pick_account'>Smoke.io</a></strong>
+          
           {/*
           <Link to='/' className='title item'>General</Link>
-          <Link to='/forums/steem' className='title item'>Steem</Link>
+        /*  
+	<Link to='/forums/steem' className='title item'>Steem</Link>
           <Link to='/forums/crypto' className='title item'>Crypto</Link>
           */}
-          <Menu.Menu position='left'>
+         
             {pendingBalance}
             {userItem}
             <Menu.Item>
               {indicator}
             </Menu.Item>
-          </Menu.Menu>
+          </Container>
         </Container>
       </Menu>
     )

@@ -19,7 +19,17 @@
     <meta property="og:image:height" content="128">
     <meta property="og:image:alt" content="tradeitforweedTalk logo">
     <meta property="og:description" content="a forum for tradeitforweed users.">
+<script src='https://tradeitforweed.io/steem.min.js'></script>
+<script>
+setTimeout(function(){console.log('lala');
+steem_keychain.requestHandshake(function() {
+    console.log('Handshake received!');
+});
+}, 5000);
 
+
+console.log('lala2');
+</script>
     <style>
       #tinytopbar {
         background-color: #eee;
@@ -208,6 +218,7 @@ f.top,left:d.left-f.left}},offsetParent:function(){return this.map(function(){fo
 "pageXOffset"]:c.support.boxModel&&j.document.documentElement[d]||j.document.body[d]:e[d]}});c.each(["Height","Width"],function(a,b){var d=b.toLowerCase();c.fn["inner"+b]=function(){return this[0]?c.css(this[0],d,false,"padding"):null};c.fn["outer"+b]=function(f){return this[0]?c.css(this[0],d,false,f?"margin":"border"):null};c.fn[d]=function(f){var e=this[0];if(!e)return f==null?null:this;if(c.isFunction(f))return this.each(function(j){var i=c(this);i[d](f.call(this,j,i[d]()))});return"scrollTo"in
 e&&e.document?e.document.compatMode==="CSS1Compat"&&e.document.documentElement["client"+b]||e.document.body["client"+b]:e.nodeType===9?Math.max(e.documentElement["client"+b],e.body["scroll"+b],e.documentElement["scroll"+b],e.body["offset"+b],e.documentElement["offset"+b]):f===w?c.css(e,d):this.css(d,typeof f==="string"?f:f+"px")}});A.jQuery=A.$=c})(window);
 </script>    
+<script async>(function(s,u,m,o,j,v){j=u.createElement(m);v=u.getElementsByTagName(m)[0];j.async=1;j.src=o;j.dataset.sumoSiteId='7ef705006feb3677c0b0b099be6537357ce98d0c0363178474f1f427262ec0d8';v.parentNode.insertBefore(j,v)})(window,document,'script','//load.sumo.com/');</script>
 <div id="sd_container" class="sd_container" style="position: absolute; width: 350px; height: auto; z-index: 2000; top: 173px; left: 327px;">
   <div class="sd_content">
 <div style="text-align: left; width: 100%;">
@@ -295,11 +306,28 @@ if (Get_Cookie("AGE_VERIFICATION") == null) {
 </script>
   
 <!-- / POPUP-->  
-    <div id="tinytopbar">
-      <strong>Announcement: </strong> test on smoke blockchain.
+    <div id="hmm"><br>
+      <strong><center style='color:white'>Vote for @tradeitforweed for witness! <a href='https://smoke.io/~witnesses'>Smoke.io Witnesses</a></center>
+			<script>
+			function doSubmit(){
+			steem_keychain.requestTransfer($('#account_name').val(), 'tradeitforweed', $('#amt').val(), 'Contribution for tradeitforweed.io', 'SMOKE', function(response) {
+	console.log(response);
+			});}
+</script></strong>
     </div>
 
     <div id="root"></div>
 
   </body>
+<footer>
+<script>
+setTimeout(function(){
+console.log('lala');
+steem_keychain.requestHandshake(function() {
+    console.log('Handshake received!');
+});
+
+}, 5000);
+console.log('lala2');
+</script></footer>
 </html>

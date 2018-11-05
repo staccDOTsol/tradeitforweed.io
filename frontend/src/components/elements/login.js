@@ -44,9 +44,9 @@ const Login = (props) => {
           </h3>
         </Segment>
         <Segment attached>
-          <p>Currently, account details and management can be found on smoke.net using the button below.</p>
+          <p>Currently, account details and management can be found on smoke.io using the button below.</p>
           <Divider></Divider>
-          <Link to={`https://smoke.net/@${account.name}`} rel='nofollow' target='_blank' className='ui primary icon mini button'>
+          <Link to={`https://smoke.io/@${account.name}`} rel='nofollow' target='_blank' className='ui primary icon mini button'>
             <Icon name='external'></Icon>
             {' '}
             Manage Account

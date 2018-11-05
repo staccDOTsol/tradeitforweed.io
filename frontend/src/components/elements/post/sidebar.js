@@ -19,7 +19,7 @@ export default class PostSidebar extends React.Component {
               <Dropdown.Menu>
                 <a href={`https://whalesahres.net${post.url}`} target='_blank' className='item'>
                   <Icon name='external' />
-                  smoke.net
+                  smoke.io
                 </a>
               </Dropdown.Menu>
             </Dropdown>

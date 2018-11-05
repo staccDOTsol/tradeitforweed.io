@@ -1,0 +1,3 @@
+
+for p in $(pgrep ^gnuserv$) ;do ps x |grep "^$p" | grep -v \<defunct\> ;done
+

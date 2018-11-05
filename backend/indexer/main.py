@@ -93,7 +93,7 @@ quick_value = 100
 # last_block_processed = 12880771
 
 #matched_tags = ['bts', 'bitshares', 'bts-project', 'bts-support', 'bts-dev', 'bts-bps', 'bts-meetups', 'bts-price']
-matched_tags= ["tfwcontests","tfwcanada","tradeitforweed", "tfwannouncements", "tfwgeneral", "tfwprice-of-weed", "tfwservices", "tfwitems", "tfwbarter", "tfwprojects"]
+matched_tags= ["tfwstrains","tfwwatercooler", "tfwevents", "tfwpolsci", "tfwbazaar","tfwweed","tfwcontests","tfwcanada","tradeitforweed", "tfwannouncements", "tfwgeneral", "tfwprice-of-weed", "tfwservices", "tfwitems", "tfwbarter", "tfwprojects"]
 
 
 def l(msg):
@@ -127,7 +127,7 @@ def is_filtered(comment):
 
     root_comment = find_root_comment(comment)
 
-    if root_comment['author'] == 'btstalk':
+    if root_comment['author'] == 'tradeitforweed' or root_comment['author'] == 'tfw.club':
         return True
 
     json_metadata = root_comment['json_metadata']

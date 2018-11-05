@@ -45,7 +45,7 @@ export default class ForumReservation extends React.Component {
                                             <Table.Row>
                                                 <Table.Cell collapsing textAlign='right'>To</Table.Cell>
                                                 <Table.Cell>
-                                                    <a href='https://smoke.net/@tradeitforweed'>
+                                                    <a href='https://smoke.io/@tradeitforweed'>
                                                         @chainbb
                                                     </a>
                                                 </Table.Cell>

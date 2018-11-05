@@ -24,7 +24,7 @@ export default class PostFormError extends React.Component {
              defaultValue={message}
              name='error'
            />
-           <p>If you need assistance, please notify here on the forums, on smoke.net. Please include the error messages, all of the text in the box above, and a description of what you were attempting to do.</p>
+           <p>If you need assistance, please notify here on the forums, on smoke.io. Please include the error messages, all of the text in the box above, and a description of what you were attempting to do.</p>
          </Form>
         </Modal.Content>
         <Modal.Actions>
