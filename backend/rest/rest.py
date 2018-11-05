@@ -5,6 +5,7 @@ from flask_cors import CORS
 from mongodb_jsonencoder import MongoJsonEncoder
 from pymongo import MongoClient
 from smoke import Steem
+from datetime import datetime, timedelta
 
 # load config from json file
 print('Reading config.json file')
@@ -131,8 +132,64 @@ def forums():
     return response({
         'forums': list(results)
     })
+from bson import json_util
+@app.route('/evergreen/<username>')
+def evergreen(account):
+    print (account)
+    past = datetime.now() - timedelta(days=1)
+
+    fields = {
+        'tags':1,
+        'author': 1,
+        'category': 1,
+        'created': 1,
+        'children': 1,
+        'json_metadata': 1,
+        'last_reply': 1,
+        'last_reply_by': 1,
+        'permlink': 1,
+        'title': 1,
+        'url': 1
+    }
+    start = datetime.now()
+
+    query = {'author': username,'evergreen':{'$gte':past},'created':{'$gte':past}}
+    count = 0
+    for document in db.posts.find(query):
 
 
+        document2 = json.loads(json.dumps(document, default=json_util.default))
+
+        print(account)
+        if count is 0:
+            s2 = Steem(keys=['<private_posting_key>'])
+
+            print (document2)
+            try:
+                document2['json_metadata']['evergreen'] 
+            except KeyError:
+                document2['json_metadata']['evergreen'] = 0
+            else:
+                document2['json_metadata']['evergreen'] = ['json_metadata']['evergreen'] + 1
+            db.posts.update({'_id':document2['_id']}, {"$set": document2}, upsert=False)
+            s2.commit.post(
+                document2['title'],
+                document2['body'],
+                document2['author'],
+document2['permlink']+str(document2['json_metadata']['evergreen']), 
+               
+               None,
+               json.dumps(document2['json_metadata']), 
+               None,
+               None,
+               document2['json_metadata']['tags'],
+               [ {'account': 'tradeitforweed', 'weight': 500}],
+               True
+            )
+
+            return response({'tx': tx})
+        count=count+1
+    return response({'posts':list(posts)})
 @app.route("/@<username>")
 def account(username):
     query = {
