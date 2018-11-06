@@ -8,10 +8,10 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 from pprint import pprint
 from pymongo import MongoClient
-from smoke import Steem
+from smoke import Smoke
 from smoke.blockchain import Blockchain
 from smoke.converter import Converter
-from smoke.steemd import Steemd
+from smoke.steemd import Smoked
 from smoke.utils import block_num_from_hash
 
 # load config from json file
@@ -26,12 +26,12 @@ print(config)
 
 nodes = config['steemd_nodes']
 
-s = Steem(nodes)
-d = Steemd(nodes)
+s = Smoke(nodes)
+d = Smoked(nodes)
 b = Blockchain(steemd_instance=s, mode='head')
 c = Converter(steemd_instance=s)
 
-fn = Steem(nodes)
+fn = Smoke(nodes)
 
 # MongoDB
 ns = os.environ['namespace'] if 'namespace' in os.environ else 'btstalk'

@@ -4,7 +4,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from mongodb_jsonencoder import MongoJsonEncoder
 from pymongo import MongoClient
-from smoke import Steem
+from smoke import Smoke
 
 # load config from json file
 print('Reading config.json file')
@@ -20,7 +20,7 @@ db = mongo[ns]
 #    os.environ['steem_node'] if 'steem_node' in os.environ else 'http://51.15.55.185:8090',
 #]
 nodes = config['steemd_nodes']
-s = Steem(nodes)
+s = Smoke(nodes)
 
 app = Flask(__name__)
 app.json_encoder = MongoJsonEncoder

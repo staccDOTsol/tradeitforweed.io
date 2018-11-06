@@ -7,6 +7,7 @@ import VoteButton from './button/vote'
 export default class PostControls extends React.Component {
 
   castVote = (payload) => {
+    console.log(payload)
     const id = [payload.author, payload.permlink].join("/")
     this.props.actions.setVoteProcessing(id)
     this.props.actions.castVote(payload)
@@ -25,6 +26,7 @@ export default class PostControls extends React.Component {
         account={this.props.account}
         status={this.props.status}
         post={post}
+        a={this.props.a}
         loading={(processing.votes.indexOf(post._id) !== -1)}
         error={(processing.errors[post._id] ? processing.errors[post._id] : false)}
         onWeightChange={this.props.actions.setPreference}

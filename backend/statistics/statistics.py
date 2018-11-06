@@ -150,10 +150,18 @@ def get_post_count(tags=[], namespace=False):
             'namespace': namespace,
             '_removedFrom': {'$ne': namespace},
         })
-    return db.posts.count({
+    p = db.posts.count({
         'category': {'$in': tags},
         '_removedFrom': {'$nin': tags},
     })
+    l(p)
+    for post in db.posts.find({}):
+        #l(post['permlink'][-4:-1])
+        if post['permlink'][-4:-1] == '---':
+            l('p p p p')
+            p = p - 1
+    l(p)
+    return p
 
 
 def get_reply_count(tags=[], namespace=False):

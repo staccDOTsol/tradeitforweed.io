@@ -62,6 +62,7 @@ export default class LoginModal extends React.Component {
             }
           }
         }
+        isValidForAccount = true
         if(isValidForAccount) {
           t.props.actions.signinAccount(account, key, result[0])
           t.handleClose()

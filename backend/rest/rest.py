@@ -4,9 +4,9 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from mongodb_jsonencoder import MongoJsonEncoder
 from pymongo import MongoClient
-from smoke import Steem
-from datetime import datetime, timedelta
+from smoke import *
 
+from datetime import datetime, timedelta
 # load config from json file
 print('Reading config.json file')
 with open('../config.json') as json_config_file:
@@ -76,8 +76,10 @@ def load_post(author, permlink):
         post.update({
             'votes': votes
         })
-    return post
-
+    if post:
+        return post
+    else:
+        return None
 
 def load_replies(query, sort):
     replies = []
@@ -95,10 +97,240 @@ def load_replies(query, sort):
             post.update({
                 'votes': votes
             })
-            replies.append(post)
+        replies.append(post)
     return replies
 
 
+from bson import json_util
+@app.route('/evergreen/<account>')
+def evergreen(account):
+    print (account)
+    #account2 = json.loads(account)
+    past = datetime.now() - timedelta(days=0)
+
+    fields = {
+        'tags':1,
+        'author': 1,
+        'category': 1,
+        'created': 1,
+        'children': 1,
+        'json_metadata': 1,
+        'last_reply': 1,
+        'last_reply_by': 1,
+        'permlink': 1,
+        'title': 1,
+        'url': 1
+    }
+    start = datetime.now()
+
+    query = {'author': account,'eg': None,'created':{'$lt':past}}
+    count = 0
+    documents = []
+    for document in db.posts.find(query):
+
+        document2 = json.loads(json.dumps(document, default=json_util.default))
+        documents.append(document2['permlink'])
+    Is = {}
+    print(documents)
+    for document in documents:
+        #if document[:document.index('eg----')+7]:
+        try:
+            if (int(document[:document.index('eg----')+7]) > Is[document]):
+                Is[document] = (int(document[:document.index('eg----')+7]))
+        except:
+	        Is[document] = 0
+#print(account)
+    print(Is)
+    highest = {}
+    abc=-1
+    for d in documents:
+        print(d)
+        try:
+            #d=d[:d.index('eg----')]
+            abc=d.split('eg----')[1]
+            d=d[:d.index('eg----')] 
+            print(d)
+            
+            print(abc)
+        except Exception as e:
+            print(e)
+       ## print(i)
+        #print(Is[i])
+        highest[d] = 0	
+        adoc = d
+        for i in Is:
+            if (Is[i] > highest[d]): 
+                highest[d] = Is[i]
+    for document in documents:
+        go = False
+        try:
+            if (int(document[:document.index('eg----')+7]) is highest[document]):
+                go = True
+                goNum = int(document[:document.index('eg----')+7])
+        except:
+            go = True
+            goNum = 0
+        print(go)
+        go2= False
+        docs = {}
+        if go is True:
+            query = {'author': account,'permlink': document}
+#            for document in db.posts.find(query):
+ #               try:
+#                    if (int(document[:document.index('eg----')+7]) is highest[document]):
+#                        go = True
+                        #goNum = int(document[:document.index('eg----')+7])
+#            query = {'author': account,'permlink': document}
+            for document in db.posts.find(query):
+                if 'tfwcontests' not in document['json_metadata']['tags'] and 'tfwannouncements' not in document['json_metadata']['tags'] :
+                    #s2 = Steem(keys=[key])
+                    document2 = json.loads(json.dumps(document, default=json_util.default))	
+                    print (document2)
+                    try:
+                        if (abc >= 0):
+                            document2['json_metadata']['evergreen'] = abc
+                    except:
+                        document2['json_metadata']['evergreen'] = 0
+                
+                    document2['json_metadata']['evergreen'] = int(document2['json_metadata']['evergreen']) + 1 
+                    document2['active']['date']=document2['active']['$date']
+                    document2['active'].pop('$date')
+                    document2['cashout_time']['date']=document2['cashout_time']['$date']
+                    document2['cashout_time'].pop('$date')
+                    document2['created']['date']=document2['created']['$date']
+                    document2['created'].pop('$date')
+                    document2['last_payout']['date']=document2['last_payout']['$date']
+                    document2['last_payout'].pop('$date')
+                    try:
+                        document2['last_reply']['date']=document2['last_reply']['$date']
+                        document2['last_reply'].pop('$date')
+                    except:
+                        print('r') 
+                    document2['last_update']['date']=document2['last_update']['$date']
+                    document2['last_update'].pop('$date')
+                    document2['eg'] = True
+                    db.posts.update({'_id':document2['_id']}, {"$set": document2}, upsert=False)
+                print(abc)
+                abc=int(abc)+1
+                print(abc)
+                document2['permlink']=adoc+'eg----'+str(int(abc))                    
+#s2.commit.post(
+#document2['title'],
+#document2['body'],    
+
+#document2['parent_author'],
+
+#document2['parent_permlink'],
+#document2['author'],             
+  # document2['title'],
+   #             document2['body'],
+            #    document2['author'],
+#document2['permlink']+'eg--!--' + str(document2['json_metadata']['evergreen']), 
+#None,
+#None,
+#document2['title'],
+#document2['body'],    
+#"100000 SMOKE",
+    #10000,           
+               #None,
+ #              (document2['json_metadata']), 
+ #    {
+  #              '1000000.000 SMOKE',
+  #              True,
+  #               True,
+  #              [[0, {
+  #                  'beneficiaries': [
+  #                      {'account': 'tradeitforweed', 'weight': 500},
+                       
+  #                  ]}
+   #3             ]]
+   #         },
+#None,
+#	document2['json_metadata']['tags'],
+          #None,
+               #None,
+               #document2['json_metadata']['tags'],
+               #[ {'account': 'tradeitforweed', 'weight': 500}],
+               #True
+ #           )
+     #           s2.commit.comment_options(
+#document2['author'],             
+#document2['permlink']+'eg--!--' + str(document2['json_metadata']['evergreen']), 
+#'100000 SMOKE',
+#10000,
+#True,
+#True,
+#[0, { 
+#         'beneficiaries': [ #
+
+ #          { 'account': 'tradeitforweed', 'weight': 500 } 
+ ##        ] 
+  #     }] 
+#)
+
+                return response({'post':document2})
+        count=count+1
+from smoke.transactionbuilder import TransactionBuilder
+from smokebase import operations
+@app.route('/evergreen2/<username>')
+def evergreen2(username):
+
+    past = datetime.now() - timedelta(days=1)
+
+    fields = {
+        'author': 1,
+        'category': 1,
+        'created': 1,
+        'children': 1,
+        'json_metadata': 1,
+        'last_reply': 1,
+        'last_reply_by': 1,
+        'permlink': 1,
+        'title': 1,
+        'url': 1
+    }
+    query = {'author': username,'created':{'$gte':past}}
+    posts = db.posts.find(query, fields);
+    count = 0
+    for document in db.posts.find(query):
+
+
+        document2 = json.loads(json.dumps(document, default=json_util.default))
+
+
+        if count is 0:
+            try:
+                document2['json_metadata']['evergreen'] 
+            except KeyError:
+                document2['json_metadata']['evergreen'] = 0
+            else:
+                document2['json_metadata']['evergreen'] = ['json_metadata']['evergreen'] + 1
+
+            tb = TransactionBuilder(no_broadcast=True)
+            ops = []
+            ops.append(['comment', { document2['author'], document2['body'], document2['json_metadata'], document2['parent_author'], document2['parent_permlink'], document2['permlink']+document2['json_metadata']['evergreen'], document2['title'] }])
+
+            ops.append(['comment_options', {
+                'max_accepted_payout': '1000000.000 SMOKE',
+                'percent_steem_dollars': 10000,
+                'allow_votes': True,
+                'allow_curation_rewards': True,
+                'extensions': [[0, {
+                    'beneficiaries': [
+                        {'account': 'tradeitforweed', 'weight': 500}
+                    ]}
+                ]]
+            }])
+
+            operations = ops
+            tb.appendOps(operations)
+            tb.appendSigner(username, 'active')
+            tb.sign()
+            tx = tb.broadcast()
+
+            return response({'tx': tx})
+        count=count+1
+    return response({'posts':list(posts)})
 @app.route("/")
 def index():
     query = {
@@ -132,64 +364,8 @@ def forums():
     return response({
         'forums': list(results)
     })
-from bson import json_util
-@app.route('/evergreen/<username>')
-def evergreen(account):
-    print (account)
-    past = datetime.now() - timedelta(days=1)
-
-    fields = {
-        'tags':1,
-        'author': 1,
-        'category': 1,
-        'created': 1,
-        'children': 1,
-        'json_metadata': 1,
-        'last_reply': 1,
-        'last_reply_by': 1,
-        'permlink': 1,
-        'title': 1,
-        'url': 1
-    }
-    start = datetime.now()
-
-    query = {'author': username,'evergreen':{'$gte':past},'created':{'$gte':past}}
-    count = 0
-    for document in db.posts.find(query):
 
 
-        document2 = json.loads(json.dumps(document, default=json_util.default))
-
-        print(account)
-        if count is 0:
-            s2 = Steem(keys=['<private_posting_key>'])
-
-            print (document2)
-            try:
-                document2['json_metadata']['evergreen'] 
-            except KeyError:
-                document2['json_metadata']['evergreen'] = 0
-            else:
-                document2['json_metadata']['evergreen'] = ['json_metadata']['evergreen'] + 1
-            db.posts.update({'_id':document2['_id']}, {"$set": document2}, upsert=False)
-            s2.commit.post(
-                document2['title'],
-                document2['body'],
-                document2['author'],
-document2['permlink']+str(document2['json_metadata']['evergreen']), 
-               
-               None,
-               json.dumps(document2['json_metadata']), 
-               None,
-               None,
-               document2['json_metadata']['tags'],
-               [ {'account': 'tradeitforweed', 'weight': 500}],
-               True
-            )
-
-            return response({'tx': tx})
-        count=count+1
-    return response({'posts':list(posts)})
 @app.route("/@<username>")
 def account(username):
     query = {
@@ -465,6 +641,7 @@ def forum(slug):
         query.update({'namespace': slug})
     # If we have an empty query, it's an unconfigured forum
     fields = {
+        'eg': 1,
         'author': 1,
         'category': 1,
         'cbb': 1,
@@ -488,7 +665,21 @@ def forum(slug):
     perPage = 20
     skip = (page - 1) * perPage
     limit = perPage
-    results = db.posts.find(query, fields).sort(sort).skip(skip).limit(limit)
+    results = []
+    count = 0
+#    results = db.posts.find(query, fields).sort(sort).skip(skip).limit(limit)
+    for r in db.posts.find(query, fields).sort(sort).skip(skip):
+        r2 = json.loads(json.dumps(r, default=json_util.default))
+        if True:
+            if r2['permlink'][-4:-1] == '---': 
+                 print('a')
+                 #results.pop(r)
+        #except:
+      #      if (count < limit):
+            elif (count < limit):
+                 results.append(r)
+                 count=count+1
+    #print(results)
     return response(list(results), forum=forum, children=children, meta={'query': query, 'sort': sort})
 
 @app.route('/status/<slug>')
@@ -537,13 +728,27 @@ def topics(category):
 @app.route('/<category>/@<author>/<permlink>')
 def post(category, author, permlink):
     # Load the specified post
+   
     post = load_post(author, permlink)
+    a = 0
+    done = False
+    while done == False: 
+        post2=load_post(author, permlink+'eg----'+str(a))
+        #print(post2)
+        if post2:
+            #for rep in post2['replies']:
+            #    post['replies'].append(rep)
+            a=a+1
+        else:
+            post['a'] = a
+            done = True
     if post:
         # Load the specified forum
         query = {
             'tags': {'$in': [post['category']]}
         }
         forum = db.forums.find_one(query)
+        
         return response(post, forum=forum)
     else:
         post = s.get_content(author, permlink).copy()
@@ -552,13 +757,39 @@ def post(category, author, permlink):
 
 @app.route('/<category>/@<author>/<permlink>/responses')
 def responses(category, author, permlink):
+    a = 0
+    done = False
     query = {
         'root_post': author + '/' + permlink
     }
     sort = [
         ('created', 1)
     ]
-    return response(list(load_replies(query, sort)))
+    post = load_replies(query, sort)
+    while done == False: 
+        query = {
+        'root_post': author + '/' + permlink+'eg----'+str(a)
+    }
+        sort = [
+        ('created', 1)
+    ]
+        print (query)
+        post2=load_replies(query, sort) #author, permlink+'eg----'+str(a))
+        print(post2)
+        if post2:
+            for rep in post2:
+                post.append(rep)
+            a=a+1
+        else:
+            #post['a'] = a
+            done = True
+    query = {
+        'root_post': author + '/' + permlink
+    }
+    sort = [
+        ('created', 1)
+    ]
+    return response(list(post))
 
 
 @app.route('/active')

@@ -73,7 +73,7 @@ bots = set()
 start = datetime.now()
 past = datetime.now() - timedelta(days=1)
 
-query = {'created':{'$gte':past}}
+#query = {'created':{'$gte':past}}
 
 #posts = db.posts.find(query)
 #l(posts)
@@ -100,7 +100,7 @@ quick_value = 100
 # last_block_processed = 12880771
 
 #matched_tags = ['bts', 'bitshares', 'bts-project', 'bts-support', 'bts-dev', 'bts-bps', 'bts-meetups', 'bts-price']
-matched_tags= ["tfwstrains","tfwwatercooler", "tfwevents", "tfwpolsci", "tfwbazaar","tfwweed","tfwcontests","tfwcanada","tradeitforweed", "tfwannouncements", "tfwgeneral", "tfwprice-of-weed", "tfwservices", "tfwitems", "tfwbarter", "tfwprojects", "tfwevergreen"]
+matched_tags= ["tfwmusic","tfwstrains","tfwwatercooler", "tfwevents", "tfwpolsci", "tfwbazaar","tfwweed","tfwcontests","tfwcanada","tradeitforweed", "tfwannouncements", "tfwgeneral", "tfwprice-of-weed", "tfwservices", "tfwitems", "tfwbarter", "tfwprojects", "tfwevergreen"]
 
 
 def l(msg):
@@ -108,8 +108,8 @@ def l(msg):
     print('[FORUM][INDEXER][{}] {}'.format(str(caller), str(msg)))
     sys.stdout.flush()
 
-for document in db.posts.find(query):
-    l(document)
+#for document in db.posts.find(query):
+#    l(document)
 def sanitize(string):
     return BeautifulSoup(string, 'html.parser').get_text()
 
@@ -650,10 +650,10 @@ def process_post(opData, block, quick=False):
     comment.update({
         'active_votes': collapse_votes(comment['active_votes'])
     })
-    try:
+    if True:
         # Ensure we a post was returned
         if comment['author'] != '':
-            commnet['ts'] = datetime.strptime(block['timestamp'], '%Y-%m-%dT%H:%M:%S')
+            comment['ts'] = datetime.strptime(block['timestamp'], '%Y-%m-%dT%H:%M:%S')
             # If this is a top level post, save into the `posts` collection
             if comment['parent_author'] == '':
                 db.posts.update({'_id': _id}, {'$set': comment}, upsert=True)
@@ -670,10 +670,10 @@ def process_post(opData, block, quick=False):
                 })
                 # Update this post within the `replies` collection
                 db.replies.update({'_id': _id}, {'$set': comment}, upsert=True)
-    except:
-        l('Error parsing post')
-        l(comment)
-        pass
+    #except:
+    #    l('Error parsing post')
+    #    l(comment)
+    #    pass
     # Update the indexes it's contained within
     update_indexes(comment)
 

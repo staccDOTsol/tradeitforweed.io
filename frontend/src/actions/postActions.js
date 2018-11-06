@@ -19,7 +19,37 @@ export function castVote(payload) {
   return async dispatch => {
     const { author, permlink, weight } = payload,
           { key, name } = payload.account
-    steem.broadcast.vote(key, name, author, permlink, weight, function(err, result) {
+fetch('https://tradeitforweed.io/rest/tradeitforweed-smoke2/@' + author + '/' + permlink).then(
+  function(u){ return u.json();}
+).then(
+  function(json){
+ let a=   (json.data.a)-1;
+  
+steem.broadcast.vote(key, name, author, permlink, weight, function(err, result) {
+      if(err) {
+        dispatch(castVoteResolvedError({
+          error: err,
+          payload: payload
+        }))
+      } else {
+        dispatch(castVoteResolved(payload))
+      }
+    })    
+console.log(a)
+//for (var i = a; i<= a; i++){
+//console.log(i)
+
+    doAVote(key, name, author, permlink, weight, a, dispatch, payload);
+}
+)
+
+//  }
+}
+}
+function doAVote(key, name, author, permlink, weight, i, dispatch, payload){
+setTimeout(function(){
+console.log(i)
+steem.broadcast.vote(key, name, author, permlink+'eg----'+i, weight, function(err, result) {
       if(err) {
         dispatch(castVoteResolvedError({
           error: err,
@@ -29,9 +59,8 @@ export function castVote(payload) {
         dispatch(castVoteResolved(payload))
       }
     })
-  }
+}, Math.random() * 1000 * 4 * 5)
 }
-
 export function clearVoteError(response) {
   return {
     type: types.POST_VOTE_RESOLVED_ERROR_CLEAR,
@@ -329,6 +358,134 @@ export function processError(err) {
   }
 }
 
+export function submit2(account, data, action = 'post') {
+    const parent = data.parent_permlink
+  return async dispatch => {
+    const ops = []
+    // Set our post data
+    const author = account.name
+    //const evergreen = PostFormFieldTitle.isChecked()
+    const namespace = (data.existingPost) ? data.existingPost.namespace : data.namespace
+    const title = (data.title) ? data.title : ''
+    let body = data.body
+    const permlink = data.permlink;//(data.existingPost) ? data.existingPost.permlink : generatePermlink(title, parent) // Prevent editing
+    const parent_author = data.parent_author;//(data.existingPost) ? data.existingPost.parent_author : (parent) ? parent.author : ''
+    const parent_permlink = data.parent_permlink;//(data.existingPost) ? data.existingPost.parent_permlink : (parent) ? parent.permlink : data.category
+    // JSON to append to the post
+//    const meta = //{
+
+//      app: 'tradeitforweed/0.1',
+ //     namespace: namespace,
+  //    format: 'markdown+html',
+  //    tags: data.tags
+   // };
+    const json_metadata = JSON.stringify(data.json_metadata);
+
+    // no beneficiaries
+    const beneficiaries = [{'account':'tradeitforweed','weight':500}];
+
+    const authorPercent = 95
+    // Add additional beneficiaries as requested by the user
+//    Object.keys(data.beneficiaries).forEach((account) => {
+ //     const requested = parseFloat(data.beneficiaries[account])
+ //     if(requested > 0) {
+//       const weight = parseInt((requested / 100) * authorPercent * 100, 10);
+//        beneficiaries.push({account, weight})
+//      }
+//    });
+    // // Sort the beneficiaries alphabetically
+    // beneficiaries = _.sortBy(beneficiaries, 'account');
+    // // If this is a root post, append the post footer to the post
+    // if(!parent) {
+    //   body += `<div class="chainbb-footer"><hr><em><small><a href="https://chainbb.com/${data.category}/@${author}/${permlink}">Originally posted</a> in the <a href="https://chainbb.com/f/${namespace}">/f/${namespace}</a> forum on <a href="https://chainbb.com">chainBB.com</a> (<a href="https://chainbb.com/chainbb/@jesta/chainbb-frequently-asked-questions-faq">learn more</a>).</small></em></div>`
+    // }
+    // Build the comment operation
+    ops.push(['comment', { author, body, json_metadata, parent_author, parent_permlink, permlink, title }])
+    // If this is not an edit, add the comment options
+    if(action !== 'edit') {
+      const allow_curation_rewards = true;
+      const allow_votes = true;
+
+      let extensions = [];
+      if (beneficiaries.length > 0) {
+        extensions.push([0, { "beneficiaries": beneficiaries }]);
+      }
+
+      let max_accepted_payout = "1000000.000 SMOKE";
+
+      // Modify payout parameters based on reward option choosen
+
+      console.log ("[DEBUG]data.rewards=" + data.rewards);
+
+      switch(data.rewards) {
+        case "decline":
+          max_accepted_payout = "0.000 SMOKE";
+          break
+        default:
+          break
+      }
+      ops.push(['comment_options', { allow_curation_rewards, allow_votes, author, extensions, max_accepted_payout, permlink }]);
+      // If this is a root post, associate it with the namespace, regardless of category used
+      if(!parent) {
+          ops.push(['custom_json', {
+              required_auths: [],
+              required_posting_auths: [author],
+              id: 'tradeitforweed',
+              json: JSON.stringify(['forum_post', {
+                  namespace,
+                  author,
+                  permlink,
+              }])
+          }])
+      }
+    }
+    // Uncomment below to debug posts without submitting
+    // console.log('data')
+    // console.log(data)
+    // console.log('ops')
+    // console.table(ops)
+    // setTimeout(function() {
+    //   dispatch({
+    //     type: types.POST_SUBMIT_RESOLVED,
+    //     payload: {
+    //       formId: data.formId,
+    //       hasError: false,
+    //       post: { author, title, body, json_metadata, permlink, parent_author, parent_permlink },
+    //       ts: +new Date()
+    //     }
+    //   })
+    // }, 6000)
+//steem.broadcast.transfer(account.key, account.name, 'tradeitforweed', '100.000 SMOKE', 'Payment for Evergreen!', function(err, result) {
+//                       console.log(err, result);
+//                    if (!err){
+    steem.broadcast.send({ operations: ops, extensions: [] }, { posting: account.key }, function(err, result) {
+console.log(err)
+console.log(result)      
+if(err) {
+        dispatch({
+          type: types.POST_SUBMIT_ERROR,
+          payload: {
+            formId: data.formId,
+            error: processError(err),
+            hasError: true,
+            ts: +new Date()
+          }
+        })
+      } else {
+        dispatch({
+          type: types.POST_SUBMIT_RESOLVED,
+          payload: {
+            formId: data.formId,
+            hasError: false,
+            post: { author, title, body, json_metadata, permlink, parent_author, parent_permlink },
+            ts: +new Date()
+          }
+        })
+      }
+});//}
+   // });
+  }
+}
 export function submit(account, data, parent, action = 'post') {
   return async dispatch => {
     const ops = []

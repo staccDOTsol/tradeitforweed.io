@@ -1,30 +1,79 @@
 import React from 'react'
+import { Button } from 'semantic-ui-react'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux'
 import { Divider, Header, Icon, Menu, Segment } from 'semantic-ui-react'
 import * as accountActions from '../actions/accountActions'
 import { Link } from 'react-router-dom'
 import Iframe from 'react-iframe'
-
+import * as postActions from '../actions/postActions'
+import * as GLOBAL from '../global';
 class Sidebar extends React.Component {
+//state = {props:{}}
+constructor(props) {
+    super(props)
+    const { action, filter, forum, existingPost } = props;
+//this.state.props = props    
+let tags = (filter) ? [filter] : (forum && forum.tags) ? [forum.tags[0]] : [];
+    if (action === 'edit') {
+      if (existingPost.json_metadata && existingPost.json_metadata.tags && existingPost.json_metadata.tags.length)
+        tags = existingPost.json_metadata.tags;
+      }
+    }
 
   evergreensubmit = (e) => {
-    const form = this.form.formsyForm
-    const model = form.getModel()
+//    const form = this.form.formsyForm
+ //   const model = form.getModel()
     const _id = (this.props.forum) ? this.props.forum._id : false
-    const data = {
-        ...model,
-        ...this.state,
-        forum: this.props.forum,
-        namespace: _id,
+    let data = {
+   //     ...model,
+       namespace: _id,
     }
     const { action, account, parent } = this.props
-            let uri = GLOBAL.REST_API + '/evergreen?account=' + account;
-        const response = await fetch(uri);
-    return false
+    const woo = this.props
+            let uri = GLOBAL.REST_API + '/evergreen/' + (account.name);
+     fetch(uri).then(
+  function(u){ return u.json();}
+).then(
+  function(json){
+    console.log(json.data.post);
+data=json.data.post;	
+  //const data = {
+  //       namespace: _id,
+  //  }
+    //const { action, account, parent } = this.props
+    woo.actions.submit2(account, data,  action)
   }
+)
+  return false;
+}
 
-  render() {
+//state={}
+ //constructor(props) {
+   // super(props)
+    //const { action, filter, forum, existingPost } = props;
+    //let tags = (filter) ? [filter] : (forum && forum.tags) ? [forum.tags[0]] : [];
+   // if (action === 'edit') {
+   //   if (existingPost.json_metadata && existingPost.json_metadata.tags && existingPost.json_metadata.tags.length)$
+     
+   // this.drafts = props.drafts || {}
+  /*  this.state = {
+      formId: _.uniqueId('postform_'),
+      activeItem: 'post',
+      beneficiaries: {},
+      existingPost: (existingPost) ? existingPost : false,
+      category: (existingPost) ? existingPost.parent_permlink : (filter) ? filter : (forum && forum.tags) ? forum.$
+      recommended: (forum && forum.tags) ? forum.tags : [],
+      submitting: false,
+      waitingforblock: false,
+      preview: {},
+      submitted: {},
+      tags: tags
+    };*/
+  
+
+  		 
+render() {
     // const forums = this.props.forums;
     const { account, forum, section } = this.props
     const { isUser } = account
@@ -131,8 +180,8 @@ class Sidebar extends React.Component {
             primary
             onClick={this.evergreensubmit}
           >
-            Evergreen?
-          </Button>	
+            Evergreen? 
+          </Button>	<br></br>Re-posts an item not a contest 7+ days old, for you to have continual income.	
 	<Link className={`item`} to='/newspage'>
             
             News Page
@@ -183,7 +232,14 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {actions: bindActionCreators(accountActions, dispatch)}
+  return {actions: bindActionCreators({
+    ...accountActions,
+    ...postActions,
+  //  ...statusActions
+  }, dispatch)}
 }
+//function mapDispatchToProps(dispatch) {
+ // return {actions: bindActionCreators(accountActions, dispatch)}
+//}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

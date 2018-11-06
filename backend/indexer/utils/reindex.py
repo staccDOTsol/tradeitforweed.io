@@ -1,4 +1,4 @@
-from steem import Steem
+from steem import Smoke
 from pymongo import MongoClient
 from pprint import pprint
 import json
@@ -13,7 +13,7 @@ print(config)
 
 ns = os.environ['namespace'] if 'namespace' in os.environ else 'btstalk'
 
-s = Steem(config['steemd_nodes'])
+s = Smoke(config['steemd_nodes'])
 mongo = MongoClient(config['mongo_url'])
 
 db = mongo[ns]

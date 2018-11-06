@@ -43,6 +43,7 @@ export default function post(state = initialState, action) {
   let live = state.live;
   switch(action.type) {
     case types.POST_LOAD_RESOLVED:
+      console.log(action.payload)
       return Object.assign({}, state, action.payload)
     case types.POST_LOAD_BY_AUTHOR_RESOLVED:
       let { posts, totalPosts } = action.payload;
